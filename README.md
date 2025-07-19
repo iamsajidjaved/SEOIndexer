@@ -138,7 +138,7 @@ For any issues or questions, contact the developer listed in the Footer section 
 ## License
 This project is licensed under the MIT License.
 
-## Footer
+## Developer
 Developed by **Sajid Javed**, an automation expert and SEO specialist with deep knowledge of advanced and secret techniques in search engine optimization. For support or work inquiries, contact:
 - **Email**: engr.maliksajidkhan@gmail.com
 - **WhatsApp**: +971503973612
