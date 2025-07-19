@@ -71,10 +71,18 @@ Follow these step-by-step instructions to set up SEOIndexer on your system:
                  'https://www.example.com/category-sitemap.xml',
              ],
              'services'     => [
-                 'Ping-O-Matic' => 'http://rpc.pingomatic.com/',
-                 'Blo.gs'       => 'http://ping.blo.gs/',
-                 'Twingly'      => 'http://rpc.twingly.com/',
-             ],
+                'Ping-O-Matic' => 'http://rpc.pingomatic.com/',
+                'Blo.gs'       => 'http://ping.blo.gs/',
+                'Twingly'      => 'http://rpc.twingly.com/',
+                'Bloggers.jp'  => 'http://ping.bloggers.jp/rpc/',
+                'With2.net'    => 'http://blog.with2.net/ping.php',
+                'Blo.gs (alt)' => 'http://blo.gs/ping.php',
+                'BlogShares'   => 'http://www.blogshares.com/rpc.php',
+                'FC2'          => 'http://ping.fc2.com',
+                'Pingoat'      => 'http://pingoat.com/goat/RPC2',
+                'Weblogues'    => 'http://weblogues.com/RPC',
+                'Bloggerei'    => 'http://rpc.bloggerei.de/ping/',
+            ],
          ],
      ];
      ```
