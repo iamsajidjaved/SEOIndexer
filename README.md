@@ -114,6 +114,7 @@ Key files in the project:
 Future enhancements planned for SEOIndexer:
 - Integrate Google Indexer API to support Google’s indexing services.
 - Add Ping-O-Matic integration for pinging services to notify search engines and aggregators of new content.
+- Integration with Buffer.com, etc.
 
 ## Contributing
 Want to contribute to SEOIndexer? Follow these steps:
