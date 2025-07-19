@@ -103,7 +103,7 @@ php artisan fetch:sitemaps
 This command submits the URLs stored in the JSON files to IndexNow-compatible search engines:
 ```bash
 php artisan submit:indexnow
-
+```
 - **What Happens**: The command reads the JSON files, validates each URL, and sends them individually to search engines like Bing, Yandex, Naver, and others using the `indexnow_key` from the configuration.
 - **Output**: The terminal displays success or failure messages for each URL submission, helping you track the process.
 
