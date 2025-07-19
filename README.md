@@ -1,6 +1,6 @@
-# Laravel IndexNow Sitemap Fetcher and Submitter
+# SEOIndexer
 
-This Laravel project provides two console commands to fetch URLs from WordPress sitemaps and submit them to IndexNow-compatible search engines for faster indexing.
+A PHP-based tool for fetching URLs from WordPress sitemaps and submitting them to IndexNow-compatible search engines for faster indexing.
 
 ## Features
 - **Fetch Sitemaps**: Retrieves URLs from specified WordPress sitemaps and stores them in JSON files per domain.
@@ -17,8 +17,8 @@ This Laravel project provides two console commands to fetch URLs from WordPress 
 ## Installation
 1. Clone the repository:
    ```bash
-   git clone <repository-url>
-   cd <repository-folder>
+   git clone https://github.com/iamsajidjaved/SEOIndexer
+   cd SEOIndexer
    ```
 2. Install dependencies:
    ```bash
@@ -28,7 +28,7 @@ This Laravel project provides two console commands to fetch URLs from WordPress 
 4. Set up the `config/indexnow.php` file with your site details (see Configuration section).
 
 ## Configuration
-Edit `config/indexnow.php` to include your sites, their sitemaps, and IndexNow keys. Example:
+Edit `config/indexnow.php` to include your sites, their sitemaps, and IndexNow keys. For instructions on obtaining an IndexNow key, visit [Bing's IndexNow Get Started Guide](https://www.bing.com/indexnow/getstarted). Example:
 ```php
 return [
     [
@@ -79,5 +79,13 @@ php artisan indexnow:submit
 4. Push to the branch (`git push origin feature/your-feature`).
 5. Open a pull request.
 
+## Support
+For any issues or questions, contact the developer in the Footer section below.
+
 ## License
 This project is licensed under the MIT License.
+
+## About me
+Developed by **Sajid Javed**, an automation expert and SEO specialist with deep knowledge of advanced and secret techniques in search engine optimization. For support or work inquiries, contact:
+- **Email**: engr.maliksajidkhan@gmail.com
+- **WhatsApp**: +971503973612
