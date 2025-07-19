@@ -62,7 +62,6 @@ Follow these step-by-step instructions to set up SEOIndexer on your system:
          [
              'domain' => 'www.example.com',
              'indexnow_key' => 'your-indexnow-key',
-             'wordpress_app_key' => 'your-wordpress-app-key',
              'sitemaps' => [
                  'https://www.example.com/post-sitemap.xml',
                  'https://www.example.com/page-sitemap.xml',
@@ -74,7 +73,6 @@ Follow these step-by-step instructions to set up SEOIndexer on your system:
    - **Notes**:
      - Replace `www.example.com` with your website's domain.
      - Replace `your-indexnow-key` with the key obtained from Bing or another IndexNow provider.
-     - Replace `your-wordpress-app-key` with your WordPress application key (if applicable).
      - Add multiple site configurations in the array if you manage multiple websites.
 
 ## Usage
