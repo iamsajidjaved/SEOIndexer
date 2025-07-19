@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Storage;
 
 class FetchSitemaps extends Command
 {
-    protected $signature   = 'indexnow:fetch-sitemaps';
+    protected $signature   = 'fetch:sitemaps';
     protected $description = 'Fetch all URLs from WordPress sitemaps and store them per domain';
 
     public function handle()

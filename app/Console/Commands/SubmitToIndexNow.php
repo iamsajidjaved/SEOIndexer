@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Storage;
 
 class SubmitToIndexNow extends Command
 {
-    protected $signature = 'indexnow:submit';
+    protected $signature = 'submit:indexnow';
     protected $description = 'Submit URLs from sitemap JSON to IndexNow via individual GET requests';
 
     protected array $searchEngines = [

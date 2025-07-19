@@ -1,12 +1,13 @@
 # SEOIndexer
 
-SEOIndexer is a PHP-based tool built with Laravel to help website owners and developers improve search engine indexing. It fetches URLs from WordPress sitemaps and submits them to IndexNow-compatible search engines (like Bing, Yandex, and others) to ensure your content is quickly discovered and indexed.
+SEOIndexer is a PHP-based tool built with Laravel to help website owners and developers improve search engine indexing. It fetches URLs from WordPress sitemaps, submits them to IndexNow-compatible search engines (like Bing, Yandex, and others), and pings services like Ping-O-Matic, Blo.gs, and Twingly to ensure your content is quickly discovered and indexed.
 
 ## Features
 - **Fetch Sitemaps**: Automatically retrieves URLs from WordPress sitemaps and saves them as JSON files for each domain.
 - **Submit to IndexNow**: Sends URLs one-by-one to multiple IndexNow-compatible search engines, including Bing, Yandex, Naver, Seznam, Yep, and IndexNow Official.
-- **Configurable**: Uses a simple configuration file to manage multiple websites, their sitemaps, and IndexNow API keys.
-- **Error Handling**: Includes robust error handling for HTTP requests and XML parsing, with clear console messages to help troubleshoot issues.
+- **Ping Services**: Notifies multiple services (e.g., Ping-O-Matic, Blo.gs, Twingly) about new or updated content by pinging the base domain with the site name from config/indexnow.php using the XML-RPC `weblogUpdates.ping` method.
+- **Configurable**: Uses a configuration file to manage multiple websites, their sitemaps, IndexNow keys, and ping services.
+- **Error Handling**: Includes robust error handling for HTTP requests, XML parsing, and URL validation, with detailed console messages to help monitor progress.
 
 ## Requirements
 To use SEOIndexer, ensure your system meets these requirements:
@@ -49,7 +50,7 @@ Follow these step-by-step instructions to set up SEOIndexer on your system:
    ```
 
 5. **Set Up the Configuration File**  
-   The project requires a `config/indexnow.php` file to specify your websites, sitemaps, and IndexNow keys. Follow these steps:
+   The project requires a `config/indexnow.php` file to specify your websites, sitemaps, IndexNow keys, and ping services. Follow these steps:
    - **Check if `config/indexnow.php` Exists**: Navigate to the `config` directory in your project folder (`SEOIndexer/config`). If `indexnow.php` exists, proceed to edit it. If it doesn't exist, create it:
      ```bash
      touch config/indexnow.php
@@ -60,61 +61,83 @@ Follow these step-by-step instructions to set up SEOIndexer on your system:
 
      return [
          [
-             'domain' => 'www.example.com',
+             'name'         => 'Example Blog',
+             'domain'       => 'www.example.com',
+             'feed_url'     => 'https://www.example.com/feed/',
              'indexnow_key' => 'your-indexnow-key',
-             'sitemaps' => [
+             'sitemaps'     => [
                  'https://www.example.com/post-sitemap.xml',
                  'https://www.example.com/page-sitemap.xml',
+                 'https://www.example.com/category-sitemap.xml',
+             ],
+             'services'     => [
+                 'Ping-O-Matic' => 'http://rpc.pingomatic.com/',
+                 'Blo.gs'       => 'http://ping.blo.gs/',
+                 'Twingly'      => 'http://rpc.twingly.com/',
              ],
          ],
      ];
      ```
    - **Obtain an IndexNow Key**: For detailed instructions on generating an IndexNow key, visit [Bing's IndexNow Get Started Guide](https://www.bing.com/indexnow/getstarted).
    - **Notes**:
-     - Replace `www.example.com` with your website's domain.
+     - Replace `www.example.com` with your website's domain (e.g., `8xbet.hot`).
      - Replace `your-indexnow-key` with the key obtained from Bing or another IndexNow provider.
+     - Set `name` to a descriptive name for the site (used in ping requests).
+     - Set `feed_url` to the site’s RSS feed URL (used by other commands, not required for pinging).
+     - List sitemap URLs in `sitemaps` for fetching URLs.
+     - Specify ping services in `services` (e.g., Ping-O-Matic, Blo.gs, Twingly) with their XML-RPC endpoints.
      - Add multiple site configurations in the array if you manage multiple websites.
 
 ## Usage
-SEOIndexer provides two main console commands to fetch and submit URLs. Run these commands in your terminal from the project root directory.
+SEOIndexer provides three main console commands to fetch URLs, submit them to IndexNow, and ping configured services. Run these commands in your terminal from the project root directory.
 
 ### 1. Fetch Sitemaps
 This command retrieves URLs from the sitemaps listed in `config/indexnow.php` and saves them as JSON files:
 ```bash
-php artisan indexnow:fetch-sitemaps
+php artisan fetch:sitemaps
 ```
-- **What Happens**: The command fetches URLs from each sitemap, removes duplicates, and stores them in `storage/app/public/indexnow/{domain}.json` (e.g., `storage/app/public/indexnow/www.example.com.json`).
+- **What Happens**: The command fetches URLs from each sitemap, removes duplicates, and stores them in `storage/app/public/indexnow/{domain}.json` (e.g., `storage/app/public/indexnow/8xbet.hot.json`).
 - **Output**: The terminal shows progress, including the number of URLs fetched and any errors encountered.
 
 ### 2. Submit URLs to IndexNow
 This command submits the URLs stored in the JSON files to IndexNow-compatible search engines:
 ```bash
-php artisan indexnow:submit
-```
-- **What Happens**: The command reads the JSON files, validates each URL, and sends them individually to search engines like Bing, Yandex, Naver, and others.
+php artisan submit:indexnow
+
+- **What Happens**: The command reads the JSON files, validates each URL, and sends them individually to search engines like Bing, Yandex, Naver, and others using the `indexnow_key` from the configuration.
 - **Output**: The terminal displays success or failure messages for each URL submission, helping you track the process.
 
+### 3. Ping Services
+This command notifies configured services (e.g., Ping-O-Matic, Blo.gs, Twingly) about new or updated content by pinging the base domain with the site name from `config/indexnow.php`:
+```bash
+php artisan ping:services
+```
+- **What Happens**: The command sends an XML-RPC `weblogUpdates.ping` request to each service listed in `config/indexnow.php` (e.g., `http://rpc.pingomatic.com/`) using the base domain (e.g., `https://8xbet.hot`) and site name (e.g., `8xBet`).
+- **Output**: The terminal shows progress for each domain and service, including HTTP status, headers, response length, raw response, and success or failure messages.
+
 ## Commands
-- **`indexnow:fetch-sitemaps`**: Fetches URLs from sitemaps and saves them to JSON files in the `storage/app/public/indexnow` directory.
-- **`indexnow:submit`**: Submits URLs from the JSON files to IndexNow search engines using individual GET requests.
+- **`fetch:sitemaps`**: Fetches URLs from sitemaps listed in `config/indexnow.php` and saves them to JSON files in the `storage/app/public/indexnow` directory.
+- **`submit:indexnow`**: Submits URLs from the JSON files to IndexNow search engines using individual GET requests with the `indexnow_key`.
+- **`ping:services`**: Pings configured services (e.g., Ping-O-Matic, Blo.gs, Twingly) with the base domain and site name from `config/indexnow.php` using the XML-RPC `weblogUpdates.ping` method.
 
 ## File Structure
 Key files in the project:
 - `app/Console/Commands/FetchSitemaps.php`: Handles fetching and parsing sitemaps to extract URLs.
 - `app/Console/Commands/SubmitToIndexNow.php`: Manages submitting URLs to IndexNow endpoints.
-- `config/indexnow.php`: Configuration file where you define site domains, sitemaps, and API keys.
+- `app/Console/Commands/PingServices.php`: Sends pings to configured services for content updates.
+- `config/indexnow.php`: Configuration file where you define site domains, sitemaps, IndexNow keys, and ping services.
 
 ## Notes
 - **Storage Configuration**: Ensure the `public` disk is properly set up in `config/filesystems.php`. The default configuration should work, but verify that the `public` disk points to `storage/app/public`.
-- **Supported Search Engines**: The tool submits URLs to Bing, Yandex, Naver, Seznam, Yep, and IndexNow Official.
-- **URL Validation**: URLs are checked for validity before submission to prevent errors.
-- **Console Feedback**: Commands provide detailed logs to help you monitor progress and debug issues.
+- **Supported Search Engines**: The IndexNow submission supports Bing, Yandex, Naver, Seznam, Yep, and IndexNow Official.
+- **Ping Services**: The `ping:services` command supports services defined in `config/indexnow.php` (e.g., Ping-O-Matic, Blo.gs, Twingly) using the XML-RPC `weblogUpdates.ping` method, pinging only the base domain with the site name.
+- **URL Validation**: The base domain and feed URL are validated before pinging to prevent errors.
+- **Console Feedback**: Commands provide detailed logs, including HTTP status, headers, response length, and raw responses, to help monitor progress.
 
 ## TODO
 Future enhancements planned for SEOIndexer:
 - Integrate Google Indexer API to support Google’s indexing services.
-- Add Ping-O-Matic integration for pinging services to notify search engines and aggregators of new content.
-- Integration with Buffer.com, etc.
+- ~~Add Ping-O-Matic integration for pinging services to notify search engines and aggregators of new content.~~ [Completed]
 
 ## Contributing
 Want to contribute to SEOIndexer? Follow these steps:
@@ -139,7 +162,7 @@ For any issues or questions, contact the developer listed in the Footer section 
 ## License
 This project is licensed under the MIT License.
 
-## Developer
+## Footer
 Developed by **Sajid Javed**, an automation expert and SEO specialist with deep knowledge of advanced and secret techniques in search engine optimization. For support or work inquiries, contact:
 - **Email**: engr.maliksajidkhan@gmail.com
 - **WhatsApp**: +971503973612
